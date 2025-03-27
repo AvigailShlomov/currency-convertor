@@ -1,3 +1,14 @@
 import { Routes } from '@angular/router';
+import { ConverterComponent } from './components/converter/converter.component';
+import { HistoryComponent } from './components/history/history/history.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+    {
+        path:'',
+        component:ConverterComponent
+    },
+    {
+        path:'history',
+        component:HistoryComponent /**@todo: implamemt lazy loading */
+    }
+];
