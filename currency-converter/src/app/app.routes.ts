@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { ConverterComponent } from './components/converter/converter.component';
-import { HistoryComponent } from './components/history/history/history.component';
+import { HistoryComponent } from './components/history/history.component';
 
 export const routes: Routes = [
     {
