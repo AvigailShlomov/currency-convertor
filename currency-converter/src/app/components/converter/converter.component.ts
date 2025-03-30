@@ -4,6 +4,7 @@ import {
   FormGroup,
   FormControl,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,7 +13,13 @@ import { ConverterService } from '../../services/converter.service';
 
 @Component({
   selector: 'app-converter',
-  imports: [FormsModule, MatFormFieldModule, MatSelectModule, MatInputModule],
+  imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './converter.component.html',
   styleUrl: './converter.component.css',
 })
@@ -20,7 +27,7 @@ export class ConverterComponent implements OnInit {
   converterService = inject(ConverterService);
 
   convertForm = new FormGroup({
-    amout: new FormControl<number>(1, Validators.required),
+    amount: new FormControl<number>(1, [Validators.required, Validators.min(1)]),
     from: new FormControl<string>('USD', Validators.required),
     to: new FormControl<string>('ILS', Validators.required),
   });

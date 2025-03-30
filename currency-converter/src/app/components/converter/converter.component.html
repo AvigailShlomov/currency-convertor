@@ -1,12 +1,12 @@
-<form class="example-form">
+<form [formGroup]="convertForm" class="example-form">
   <mat-form-field>
     <mat-label>Amount</mat-label>
-    <input matInput matNativeControl="number" placeholder="amount" value="1" />
+    <input formControlName="amount" matInput type="number" placeholder="amount" value="1" />
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Currency</mat-label>
-    <mat-select>
+  <mat-form-field >
+    <mat-label>From</mat-label>
+    <mat-select formControlName="from">
       @for (curr of currencies(); track curr[0]) {
       <mat-option [value]="curr[0]">{{ curr[0] }} - {{ curr[1] }}</mat-option>
       }
@@ -14,12 +14,11 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Currency</mat-label>
-    <mat-select>
+    <mat-label>To</mat-label>
+    <mat-select formControlName="to">
       @for (curr of currencies(); track curr[0]) {
       <mat-option [value]="curr[0]">{{ curr[0] }} - {{ curr[1] }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
-
 </form>
