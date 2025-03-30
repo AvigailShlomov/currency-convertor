@@ -7,8 +7,8 @@
   <mat-form-field >
     <mat-label>From</mat-label>
     <mat-select formControlName="from">
-      @for (curr of currencies(); track curr[0]) {
-      <mat-option [value]="curr[0]">{{ curr[0] }} - {{ curr[1] }}</mat-option>
+      @for (currency of currencies(); track currency[0]) {
+      <mat-option [value]="currency[0]">{{ currency[0] }} - {{ currency[1] }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
@@ -16,8 +16,8 @@
   <mat-form-field>
     <mat-label>To</mat-label>
     <mat-select formControlName="to">
-      @for (curr of currencies(); track curr[0]) {
-      <mat-option [value]="curr[0]">{{ curr[0] }} - {{ curr[1] }}</mat-option>
+      @for (currency of currencies(); track currency[0]) {
+      <mat-option [value]="currency[0]">{{ currency[0] }} - {{ currency[1] }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
