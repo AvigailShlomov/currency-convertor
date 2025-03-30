@@ -1,4 +1,5 @@
-<form [formGroup]="convertForm" class="example-form">
+<div>
+<form [formGroup]="convertForm" class="example-form" (ngSubmit)="convert()">
   <mat-form-field>
     <mat-label>Amount</mat-label>
     <input
@@ -35,4 +36,7 @@
       }
     </mat-select>
   </mat-form-field>
+
+  <button mat-flat-button type="submit">Convert</button>
 </form>
+</div>

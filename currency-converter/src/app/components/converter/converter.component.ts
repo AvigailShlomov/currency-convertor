@@ -45,4 +45,9 @@ export class ConverterComponent implements OnInit {
       error: (err) => alert('Error while fetching currencies list'),
     });
   }
+
+  convert(){
+    console.log("activate convert");
+    
+  }
 }
