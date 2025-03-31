@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CurrencyMap } from '../models/currency.models';
-import {  URLS } from '../config/app.constants';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ConverterResponse, CurrencyMap } from '../models/currency.models';
+import { URLS } from '../config/app.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +9,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class ConverterService {
   private readonly http = inject(HttpClient);
 
-  currenies = toSignal<CurrencyMap>(this.http.get<CurrencyMap>(URLS.CURRENCIES));
-
-  getCurrencies(){
+  getCurrencies() {
     return this.http.get<CurrencyMap>(URLS.CURRENCIES);
   }
-  
+
+  getConvertedAmount(from: string | null, to: string | null) {
+    return this.http.get<ConverterResponse>(
+      `${URLS.CONVERTED_AMOUNT}${from}&symbols=${to}`
+    );
+  }
 }
