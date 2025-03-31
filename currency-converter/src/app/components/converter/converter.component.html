@@ -1,42 +1,55 @@
 <div>
-<form [formGroup]="convertForm" class="example-form" (ngSubmit)="convert()">
-  <mat-form-field>
-    <mat-label>Amount</mat-label>
-    <input
-      formControlName="amount"
-      matInput
-      type="number"
-      placeholder="amount"
-      value="1"
-    />
-  </mat-form-field>
+  <h1>Currency Converter</h1>
+  <form [formGroup]="convertForm" class="example-form" (ngSubmit)="convert()">
+    <mat-form-field>
+      <mat-label>Amount</mat-label>
+      <input
+        formControlName="amount"
+        matInput
+        type="number"
+        placeholder="amount"
+        value="1"
+      />
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>From</mat-label>
-    <mat-select formControlName="from">
-      @for (currency of currencies(); track currency[0]) {
-      <mat-option [value]="currency[0]">
-        {{ currency[0] }} - {{ currency[1] }}
-      </mat-option>
-      } @empty {
-      <mat-option disable> No currencies Available </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>From</mat-label>
+      <mat-select formControlName="from">
+        @for (currency of currencies(); track currency[0]) {
+        <mat-option [value]="currency[0]">
+          {{ currency[0] }} - {{ currency[1] }}
+        </mat-option>
+        } @empty {
+        <mat-option disable> No currencies Available </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>To</mat-label>
-    <mat-select formControlName="to">
-      @for (currency of currencies(); track currency[0]) {
-      <mat-option [value]="currency[0]">
-        {{ currency[0] }} - {{ currency[1] }}
-      </mat-option>
-      } @empty {
-      <mat-option disable> No currencies Available </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>To</mat-label>
+      <mat-select formControlName="to">
+        @for (currency of currencies(); track currency[0]) {
+        <mat-option [value]="currency[0]">
+          {{ currency[0] }} - {{ currency[1] }}
+        </mat-option>
+        } @empty {
+        <mat-option disable> No currencies Available </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  <button mat-flat-button type="submit">Convert</button>
-</form>
+    <button mat-flat-button type="submit">Convert</button>
+
+    @if(convertedResult()){
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Result</mat-card-title>
+        <br>
+        <mat-card-subtitle>{{ convertForm.get("amount")?.value
+        }}{{ convertForm.get("from")?.value }} = {{ convertedResult() }}
+        {{ toCurrency()[1] }}</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    }
+  </form>
 </div>
