@@ -6,3 +6,11 @@ export interface ConverterResponse {
   date: string;
   rates: Record<string, number>;
 }
+
+export interface ConversionStorage {
+  amount: number;
+  from: string;
+  to: string;
+  result: number;
+  date: Date;
+}
