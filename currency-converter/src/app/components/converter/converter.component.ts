@@ -10,8 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ConverterService } from '../../services/converter.service';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { StorageService } from '../../services/storage.service';
+import { STORAGE_KEYS } from '../../config/app.constants';
+import { ConversionStorage } from '../../models/currency.models';
 
 @Component({
   selector: 'app-converter',
@@ -22,12 +25,14 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatButtonModule],
+    MatButtonModule,
+  ],
   templateUrl: './converter.component.html',
   styleUrl: './converter.component.css',
 })
 export class ConverterComponent implements OnInit {
   converterService = inject(ConverterService);
+  storageService = inject(StorageService);
 
   convertForm = new FormGroup({
     amount: new FormControl<number>(1, [
@@ -40,7 +45,11 @@ export class ConverterComponent implements OnInit {
   currencies = signal<[string, string][]>([]);
   convertedResult = signal<number | null>(null);
   toCurrency = computed(() => {
-    return this.currencies().find(([code]) => code === this.convertForm.controls.to.value) || ['not found', ''];
+    return (
+      this.currencies().find(
+        ([code]) => code === this.convertForm.controls.to.value
+      ) || ['not found', '']
+    );
   });
 
   ngOnInit() {
@@ -58,19 +67,33 @@ export class ConverterComponent implements OnInit {
 
   convert() {
     if (!this.convertForm.valid) {
-      return console.warn('Form invalid'); 
+      return console.warn('Form invalid');
     } else {
       const { amount, from, to } = this.convertForm.value as {
         amount: number;
         from: string;
         to: string;
       };
-      
+
       this.converterService.getConvertedAmount(from, to).subscribe({
         next: (converted) => {
-          console.log(this.currencies());
-          
-          this.convertedResult.set(amount * converted.rates[to as string])
+          const result = amount * converted.rates[to as string];
+          this.convertedResult.set(result);
+
+          const conversionForStorage: ConversionStorage[] =[ {
+            amount: amount,
+            from: from,
+            to: to,
+            result: result,
+            date: new Date(),
+          }];       
+          const oldData = this.storageService.getItem(STORAGE_KEYS.HISTORY) ? this.storageService.getItem(STORAGE_KEYS.HISTORY) as ConversionStorage[] : [];
+          const newandOld=[...conversionForStorage,...oldData];
+
+          this.storageService.setItem(
+            STORAGE_KEYS.HISTORY,
+            newandOld
+          );   
         },
       });
     }
