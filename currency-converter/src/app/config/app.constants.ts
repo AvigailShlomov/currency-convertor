@@ -4,3 +4,8 @@ export const URLS = {
   CURRENCIES: BASE_URL + '/currencies',
   CONVERTED_AMOUNT: BASE_URL + '/latest?base=',
 };
+
+export const STORAGE_KEYS = {
+  HISTORY: 'HistoryKey',
+  CURRENCY: 'CurrencyKey',
+};
