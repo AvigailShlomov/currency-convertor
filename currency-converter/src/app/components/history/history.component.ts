@@ -12,22 +12,29 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { StorageService } from '../../services/storage.service';
 import { ConversionStorage } from '../../models/currency.models';
 import { STORAGE_KEYS } from '../../config/app.constants';
+import { TABLE_COLUMNS } from '../../utils/constants';
 
 @Component({
   selector: 'app-history',
-  imports: [MatTableModule, MatPaginatorModule, DecimalPipe, DatePipe],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css',
+  imports: [MatTableModule, MatPaginatorModule, DecimalPipe, DatePipe],
 })
 export class HistoryComponent implements OnInit {
   storageService = inject(StorageService);
 
-  displayedColumns: string[] = ['amount', 'from', 'to', 'result', 'date'];
+  displayedColumns: string[] = [
+    TABLE_COLUMNS.AMOUNT,
+    TABLE_COLUMNS.FROM,
+    TABLE_COLUMNS.TO,
+    TABLE_COLUMNS.RESULT,
+    TABLE_COLUMNS.DATE,
+  ];
   ELEMENT_DATA = signal<ConversionStorage[]>([]);
   dataSource = computed(() => {
     return new MatTableDataSource<ConversionStorage>(this.ELEMENT_DATA());
   });
-  @ViewChild(MatPaginator)
+  @ViewChild(MatPaginator) /**@todo: improve this to signals */
   paginator: MatPaginator = new MatPaginator();
 
   ngOnInit(): void {
@@ -35,6 +42,7 @@ export class HistoryComponent implements OnInit {
   }
 
   getConversionHistory(): ConversionStorage[] {
+    /**@todo: make this better */
     const conversionHistory = this.storageService.getItem(STORAGE_KEYS.HISTORY);
     if (conversionHistory) {
       return conversionHistory as ConversionStorage[];
@@ -43,6 +51,7 @@ export class HistoryComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    /**@todo: change this to signals */
     this.dataSource().paginator = this.paginator;
   }
 }
