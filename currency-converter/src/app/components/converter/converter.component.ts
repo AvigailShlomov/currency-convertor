@@ -45,6 +45,7 @@ export class ConverterComponent implements OnInit {
   currencies = signal<[string, string][]>([]);
   convertedResult = signal<number | null>(null);
   toCurrency = computed(() => {
+    /**@todo: rethink if its neseccary.. */
     return (
       this.currencies().find(
         ([code]) => code === this.convertForm.controls.to.value
@@ -80,22 +81,25 @@ export class ConverterComponent implements OnInit {
           const result = amount * converted.rates[to as string];
           this.convertedResult.set(result);
 
-          const conversionForStorage: ConversionStorage[] =[ {
-            amount: amount,
-            from: from,
-            to: to,
-            result: result,
-            date: new Date(),
-          }];       
-          const oldData = this.storageService.getItem(STORAGE_KEYS.HISTORY) ? this.storageService.getItem(STORAGE_KEYS.HISTORY) as ConversionStorage[] : [];
-          const newandOld=[...conversionForStorage,...oldData];
-
-          this.storageService.setItem(
-            STORAGE_KEYS.HISTORY,
-            newandOld
-          );   
+          const newConversion: ConversionStorage = 
+            {
+              amount: amount,
+              from: from,
+              to: to,
+              result: result,
+              date: new Date(),
+            };
+          this.updateStorage(newConversion);
         },
       });
     }
+  }
+
+  updateStorage(newConversion: ConversionStorage) { //MOVE TO STORAGE AND CHECK:)
+    const oldData = this.storageService.getItem(STORAGE_KEYS.HISTORY)
+      ? (this.storageService.getItem(STORAGE_KEYS.HISTORY) as ConversionStorage[])
+      : [];
+    const newAndOld = [newConversion, ...oldData];
+    this.storageService.setItem(STORAGE_KEYS.HISTORY, newAndOld);
   }
 }
